@@ -4,12 +4,12 @@ import '../../../../core/error/failures.dart';
 import '../entities/user.dart';
 
 abstract class UserRepository {
-  Future<Either<Failure, void>> signIn({
+  Future<Either<Failure, User>> signIn({
     required String userName,
     required String password,
   });
 
-  Future<Either<Failure, User>> recoverySecret({
+  Future<Either<Failure, String>> recoverySecret({
     required String code,
   });
 }
