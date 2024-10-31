@@ -10,5 +10,8 @@ class UserCredentials extends Equatable {
   });
 
   @override
-  List<Object?> get props => [userName, password];
+  List<Object?> get props => [
+        userName,
+        password,
+      ];
 }
