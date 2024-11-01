@@ -11,8 +11,15 @@ class UserModel extends User {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      secret: map[_valueKeySecret],
       userName: map[_valueKeyUserName],
+      secret: map[_valueKeySecret],
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      _valueKeyUserName: userName,
+      _valueKeySecret: secret,
+    };
   }
 }
