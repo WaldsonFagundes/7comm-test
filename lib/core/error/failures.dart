@@ -1,15 +1,35 @@
 import 'package:equatable/equatable.dart';
 
 abstract class Failure extends Equatable {
-  final List _properties;
+  final String? message;
 
-  const Failure([this._properties = const <dynamic>[]]);
+  const Failure({this.message});
 
   @override
-  List<Object?> get props => [_properties];
+  List<Object?> get props => [message];
 }
 
-class ServerFailure extends Failure {}
 
+class SecretNotFoundFailure extends Failure {
+  const SecretNotFoundFailure() : super(message: 'Secret não encontrado.');
+}
 
-class UnexpectedFailure extends Failure {}
+class UserNotFoundFailure extends Failure {
+  const UserNotFoundFailure() : super(message: 'Usuário não encontrado.');
+}
+
+class UnauthorizedFailure extends Failure {
+  const UnauthorizedFailure({String? message}) : super(message: message ?? 'Não autorizado.');
+}
+
+class UnknownErrorFailure extends Failure {
+  const UnknownErrorFailure() : super(message: 'Erro desconhecido.');
+}
+
+class InvalidPasswordFailure extends Failure {
+  const InvalidPasswordFailure() : super(message: 'Senha inválida.');
+}
+
+class InvalidRecoveryCodeFailure extends Failure {
+  const InvalidRecoveryCodeFailure() : super(message: 'Código de recuperação inválido.');
+}

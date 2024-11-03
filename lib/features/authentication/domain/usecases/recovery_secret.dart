@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_dev_test/core/error/failures.dart';
 
 import '../../../../core/usecases/usecase.dart';
+import '../entities/user.dart';
 import '../repositories/user_repository.dart';
 
 class RecoverySecret extends UseCase<String, RecoverySecretParams> {

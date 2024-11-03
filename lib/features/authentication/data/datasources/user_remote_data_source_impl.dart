@@ -18,9 +18,14 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
   @override
   Future<UserModel> logIn(
-      {required String userName, required String password, String? secret}) async {
+      {required String userName,
+      required String password,
+      String? secret}) async {
+    if (secret == null) {
+      throw SecretNotFoundException();
+    }
 
-    final totpCode =  generateTOTP(secret!);
+    final totpCode = generateTOTP(secret);
 
     const url = '$_baseUrl/login';
 
@@ -37,8 +42,10 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       return UserModel.fromMap(jsonResponse);
+    } else if (response.statusCode == 401) {
+      throw UnauthorizedException(message: response.toString());
     } else {
-      throw ServerException();
+      throw UnknownErrorException();
     }
   }
 
@@ -61,11 +68,14 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
+
       return jsonResponse['totp_secret'].toString();
+    } else if (response.statusCode == 401) {
+      throw UnauthorizedException(message: response.toString());
+    } else if (response.statusCode == 404) {
+      throw UserNotFoundException();
     } else {
-      throw ServerException();
+      throw UnknownErrorException();
     }
   }
-
-
 }

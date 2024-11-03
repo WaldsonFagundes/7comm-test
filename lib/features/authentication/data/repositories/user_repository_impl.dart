@@ -24,8 +24,16 @@ class UserRepositoryImpl implements UserRepository {
       );
 
       return Right(remoteUser);
-    } on ServerException {
-      return Left(ServerFailure());
+    } on UnauthorizedException catch (e) {
+      return Left(UnauthorizedFailure(message: e.message));
+    } on SecretNotFoundException {
+      return const Left(SecretNotFoundFailure());
+    } on UserNotFoundException {
+      return const Left(UserNotFoundFailure());
+    }  on UnknownErrorException {
+      return const Left(UnknownErrorFailure());
+    } catch (_) {
+      return const Left(UnknownErrorFailure());
     }
   }
 
@@ -39,8 +47,14 @@ class UserRepositoryImpl implements UserRepository {
           userName: userName, password: password, code: code);
 
       return Right(remoteUser);
-    } on ServerException {
-      return Left(ServerFailure());
+    } on UnauthorizedException catch (e) {
+      return Left(UnauthorizedFailure(message: e.message));
+    } on UserNotFoundException {
+      return const Left(UserNotFoundFailure());
+    } on UnknownErrorException {
+      return const Left(UnknownErrorFailure());
+    } catch (_) {
+      return const Left(UnknownErrorFailure());
     }
   }
 }
