@@ -5,6 +5,7 @@ abstract class UserRemoteDataSource {
   Future<UserModel> logIn({
     required String userName,
     required String password,
+    String? secret,
   });
 
   //POST: /auth/recovery-secret

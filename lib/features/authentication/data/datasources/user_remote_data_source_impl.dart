@@ -1,5 +1,6 @@
 import 'dart:convert';
-
+import 'package:flutter_dev_test/features/authentication/infra/services/generate_totp.dart';
+import 'package:otp/otp.dart';
 import '../../../../core/error/execeptions.dart';
 import '../models/user_model.dart';
 import 'user_remote_data_source.dart';
@@ -16,10 +17,12 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   };
 
   @override
-  Future<UserModel> logIn({required String userName, required String password}) async {
-    const url = '$_baseUrl/login';
+  Future<UserModel> logIn(
+      {required String userName, required String password, String? secret}) async {
 
-    const totpCode = '1234';
+    final totpCode =  generateTOTP(secret!);
+
+    const url = '$_baseUrl/login';
 
     final response = await client.post(
       Uri.parse(url),
@@ -63,4 +66,6 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       throw ServerException();
     }
   }
+
+
 }

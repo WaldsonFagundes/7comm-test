@@ -7,6 +7,7 @@ abstract class UserRepository {
   Future<Either<Failure, User>> logIn({
     required String userName,
     required String password,
+    required String? secret,
   });
 
   Future<Either<Failure, String>> recoverySecret({

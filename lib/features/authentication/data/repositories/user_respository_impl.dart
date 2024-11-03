@@ -14,11 +14,13 @@ class UserRepositoryImpl implements UserRepository {
   Future<Either<Failure, User>> logIn({
     required String userName,
     required String password,
+    String? secret,
   }) async {
     try {
       final remoteUser = await remoteDataSource.logIn(
         userName: userName,
         password: password,
+        secret: secret,
       );
 
       return Right(remoteUser);

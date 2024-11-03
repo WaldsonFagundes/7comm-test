@@ -22,4 +22,15 @@ class UserModel extends User {
       _valueKeySecret: secret,
     };
   }
+
+  UserModel copyWith({
+    String? userName,
+    String? secret,
+  }) {
+    return UserModel(
+      userName: userName ?? this.userName,
+      secret: secret ?? this.secret,
+    );
+  }
+
 }
