@@ -2,6 +2,12 @@
 
 **flutter_dev_test** é um aplicativo Flutter desenvolvido para testes, com foco em autenticação segura com TOTP. O app utiliza Clean Architecture e BLoC para garantir modularidade e facilidade de manutenção.
 
+
+<p align="center">
+  <img src="assets/appimg1.png" width="200" alt="Demonstração do App">
+   <img src="assets/appimg2.png" width="200" alt="Demonstração do App">
+</p>
+
 ## Funcionalidades
 
 - Login seguro com TOTP
