@@ -1,7 +1,9 @@
+// Package imports:
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_dev_test/core/error/failures.dart';
 
+// Project imports:
+import 'package:flutter_dev_test/core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../entities/user.dart';
 import '../repositories/user_repository.dart';
@@ -24,12 +26,12 @@ class LogIn extends UseCase<User, LogInParams> {
 class LogInParams extends Equatable {
   final String userName;
   final String password;
-  final String? secret;
+  final String secret;
 
   const LogInParams({
     required this.userName,
     required this.password,
-    this.secret,
+    required this.secret,
   });
 
   @override

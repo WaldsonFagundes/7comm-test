@@ -1,3 +1,4 @@
+// Project imports:
 import '../models/user_model.dart';
 
 abstract class UserRemoteDataSource {
@@ -5,7 +6,7 @@ abstract class UserRemoteDataSource {
   Future<UserModel> logIn({
     required String userName,
     required String password,
-    String? secret,
+    required String secret,
   });
 
   //POST: /auth/recovery-secret

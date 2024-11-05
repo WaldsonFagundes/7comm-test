@@ -1,9 +1,12 @@
+// Package imports:
 import 'package:dartz/dartz.dart';
-import 'package:flutter_dev_test/core/error/execeptions.dart';
-import 'package:flutter_dev_test/core/error/failures.dart';
-import 'package:flutter_dev_test/features/authentication/data/datasources/user_remote_data_source.dart';
-import 'package:flutter_dev_test/features/authentication/domain/entities/user.dart';
-import 'package:flutter_dev_test/features/authentication/domain/repositories/user_repository.dart';
+
+// Project imports:
+import '../../../../core/error/execeptions.dart';
+import '../../../../core/error/failures.dart';
+import '../../domain/entities/user.dart';
+import '../../domain/repositories/user_repository.dart';
+import '../datasources/user_remote_data_source.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource remoteDataSource;
@@ -14,7 +17,7 @@ class UserRepositoryImpl implements UserRepository {
   Future<Either<Failure, User>> logIn({
     required String userName,
     required String password,
-    String? secret,
+    required String secret,
   }) async {
     try {
       final remoteUser = await remoteDataSource.logIn(
@@ -30,9 +33,9 @@ class UserRepositoryImpl implements UserRepository {
       return const Left(SecretNotFoundFailure());
     } on UserNotFoundException {
       return const Left(UserNotFoundFailure());
-    }  on UnknownErrorException {
+    } on UnknownErrorException {
       return const Left(UnknownErrorFailure());
-    } catch (_) {
+    } catch (e) {
       return const Left(UnknownErrorFailure());
     }
   }
@@ -53,7 +56,7 @@ class UserRepositoryImpl implements UserRepository {
       return const Left(UserNotFoundFailure());
     } on UnknownErrorException {
       return const Left(UnknownErrorFailure());
-    } catch (_) {
+    } catch (e) {
       return const Left(UnknownErrorFailure());
     }
   }

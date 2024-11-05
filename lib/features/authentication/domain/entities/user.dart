@@ -1,12 +1,13 @@
+// Package imports:
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
   final String userName;
-  final String? secret;
+  final String secret;
 
   const User({
     required this.userName,
-    this.secret,
+    required this.secret,
   });
 
   @override

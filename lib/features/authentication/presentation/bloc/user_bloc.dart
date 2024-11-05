@@ -1,13 +1,14 @@
+// Package imports:
 import 'package:dartz/dartz.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dev_test/features/authentication/domain/entities/user.dart';
-import 'package:flutter_dev_test/features/authentication/domain/usecases/recovery_secret.dart';
-import 'package:flutter_dev_test/features/authentication/presentation/bloc/user_event.dart';
-import 'package:flutter_dev_test/features/authentication/presentation/bloc/user_state.dart';
 
+// Project imports:
 import '../../../../core/error/failures.dart';
+import '../../domain/entities/user.dart';
 import '../../domain/usecases/login.dart';
+import '../../domain/usecases/recovery_secret.dart';
+import 'user_event.dart';
+import 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   final LogIn login;
@@ -22,11 +23,17 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Future<void> _onLogin(LogInEvent event, Emitter<UserState> emit) async {
+    if (event.secret.isEmpty) {
+      emit(const SecretMissingState());
+      return;
+    }
+
     emit(LoadingState());
     final failureOrUser = await login(LogInParams(
-        userName: event.userName,
-        password: event.password,
-        secret: event.secret));
+      userName: event.userName,
+      password: event.password,
+      secret: event.secret,
+    ));
 
     emit(_mapFailureOrUserToState(failureOrUser));
   }
@@ -46,7 +53,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         return FailureState(message: failure.message);
       },
       (user) {
-        return UserLoadedState(user: user);
+        return LoginSuccess();
       },
     );
   }

@@ -1,17 +1,25 @@
+// Dart imports:
 import 'dart:convert';
-import 'package:flutter_dev_test/features/authentication/infra/services/generate_totp.dart';
-import 'package:otp/otp.dart';
+
+// Package imports:
+import 'package:http/http.dart' as http;
+
+// Project imports:
 import '../../../../core/error/execeptions.dart';
+import '../../infra/services/generate_totp.dart';
 import '../models/user_model.dart';
 import 'user_remote_data_source.dart';
-import 'package:http/http.dart' as http;
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   final http.Client client;
 
   UserRemoteDataSourceImpl({required this.client});
 
-  static const String _baseUrl = 'http://127.0.0.1:5000/auth';
+  //emulador android
+  static const String _baseUrl = 'http://10.0.2.2:5000/auth';
+
+  //static const String _baseUrl = 'http://127.0.0.1:5000/auth';
+
   static const Map<String, String> _headers = {
     'Content-Type': 'application/json',
   };
@@ -20,8 +28,8 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   Future<UserModel> logIn(
       {required String userName,
       required String password,
-      String? secret}) async {
-    if (secret == null) {
+      required String secret}) async {
+    if (secret.isEmpty) {
       throw SecretNotFoundException();
     }
 
@@ -43,7 +51,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       final jsonResponse = json.decode(response.body);
       return UserModel.fromMap(jsonResponse);
     } else if (response.statusCode == 401) {
-      throw UnauthorizedException(message: response.toString());
+      throw UnauthorizedException();
     } else {
       throw UnknownErrorException();
     }
@@ -71,7 +79,8 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
       return jsonResponse['totp_secret'].toString();
     } else if (response.statusCode == 401) {
-      throw UnauthorizedException(message: response.toString());
+      final message = json.decode(response.body)['message'] ?? 'Unauthorized';
+      throw UnauthorizedException(message: message);
     } else if (response.statusCode == 404) {
       throw UserNotFoundException();
     } else {

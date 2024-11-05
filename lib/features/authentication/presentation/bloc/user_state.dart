@@ -1,5 +1,7 @@
+// Package imports:
 import 'package:equatable/equatable.dart';
 
+// Project imports:
 import '../../domain/entities/user.dart';
 
 abstract class UserState extends Equatable {
@@ -13,6 +15,8 @@ class InitialState extends UserState {}
 
 class LoadingState extends UserState {}
 
+class LoginSuccess extends UserState {}
+
 class UserLoadedState extends UserState {
   final User? user;
 
@@ -21,6 +25,7 @@ class UserLoadedState extends UserState {
   @override
   List<Object?> get props => [user];
 }
+
 class SecretLoadedState extends UserState {
   final String secret;
 
@@ -30,7 +35,6 @@ class SecretLoadedState extends UserState {
   List<Object?> get props => [secret];
 }
 
-
 class FailureState extends UserState {
   final String? message;
 
@@ -38,4 +42,11 @@ class FailureState extends UserState {
 
   @override
   List<Object?> get props => [message];
+}
+
+class SecretMissingState extends UserState {
+  const SecretMissingState();
+
+  @override
+  List<Object?> get props => [];
 }
